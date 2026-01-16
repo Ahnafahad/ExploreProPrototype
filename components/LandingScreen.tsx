@@ -92,10 +92,10 @@ const CloudIcon: React.FC<{ size: number; className?: string }> = ({ size, class
 
 // Custom Vector Illustration for Oxford/Cambridge Skyline
 const CityIllustration: React.FC = () => (
-  <svg 
-    viewBox="0 0 500 220" 
-    className="w-full h-auto block align-bottom" 
-    preserveAspectRatio="xMidYBottom slice"
+  <svg
+    viewBox="0 0 500 220"
+    className="w-full h-auto block align-bottom"
+    preserveAspectRatio="xMidYMax slice"
     xmlns="http://www.w3.org/2000/svg"
   >
     <defs>

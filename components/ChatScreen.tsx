@@ -1,10 +1,10 @@
 
 import React, { useState } from 'react';
-import { ArrowLeft, Search, Send, Phone, Video, Info } from 'lucide-react';
+import { ArrowLeft, Search, Send, Phone, Video, Info, Home, Compass, MessageCircle, User } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 
 const ChatScreen: React.FC = () => {
-  const { goBack } = useAppContext();
+  const { goBack, navigate } = useAppContext();
   const [messageText, setMessageText] = useState('');
   const [activeConversation, setActiveConversation] = useState<number | null>(null);
 
@@ -223,6 +223,26 @@ const ChatScreen: React.FC = () => {
           </div>
         </>
       )}
+
+      {/* iOS Blur Tab Bar */}
+      <div className="absolute bottom-0 left-0 w-full bg-white/80 ios-blur border-t border-black/5 pt-3 pb-6 px-6 flex justify-between items-center z-[100]">
+        <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('home')}>
+          <Home size={24} strokeWidth={2.5} />
+          <span className="text-[10px] font-medium">Explore</span>
+        </div>
+        <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('map')}>
+          <Compass size={24} strokeWidth={2.5} />
+          <span className="text-[10px] font-medium">Map</span>
+        </div>
+        <div className="flex flex-col items-center gap-1 text-ios-blue cursor-pointer">
+          <MessageCircle size={24} strokeWidth={2.5} />
+          <span className="text-[10px] font-medium">Chat</span>
+        </div>
+        <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('profile')}>
+          <User size={24} strokeWidth={2.5} />
+          <span className="text-[10px] font-medium">Profile</span>
+        </div>
+      </div>
 
     </div>
   );

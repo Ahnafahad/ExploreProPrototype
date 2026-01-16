@@ -135,11 +135,11 @@ const CloudIcon: React.FC<{ size: number; className?: string }> = ({ size, class
 );
 
 const CafeCityIllustration: React.FC = () => (
-    <svg 
-      viewBox="0 0 400 180" 
-      className="w-full h-auto block align-bottom" 
+    <svg
+      viewBox="0 0 400 180"
+      className="w-full h-auto block align-bottom"
       xmlns="http://www.w3.org/2000/svg"
-      preserveAspectRatio="xMidYBottom slice"
+      preserveAspectRatio="xMidYMax slice"
     >
         <defs>
              {/* Gradients */}

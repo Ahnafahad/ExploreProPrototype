@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import {
   Search, SlidersHorizontal, MapPin, Navigation, Minus, Plus, Layers,
-  UserCheck, Volume2, Coffee, Utensils
+  UserCheck, Volume2, Coffee, Utensils, Home, Compass, MessageCircle, User
 } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 
@@ -20,12 +20,12 @@ const MapScreen: React.FC = () => {
   ];
 
   const locations = [
-    { id: 1, name: 'Oxford Historic Tour', type: 'guides', lat: 51.7520, lng: -1.2577, color: 'bg-green-500' },
-    { id: 2, name: 'Audio Walking Tour', type: 'audio', lat: 51.7540, lng: -1.2560, color: 'bg-purple-500' },
-    { id: 3, name: 'Coffee Chat Meetup', type: 'coffee', lat: 51.7510, lng: -1.2590, color: 'bg-orange-500' },
-    { id: 4, name: 'The Garden Restaurant', type: 'dining', lat: 51.7530, lng: -1.2550, color: 'bg-red-500' },
-    { id: 5, name: 'Cambridge Tour', type: 'guides', lat: 51.7550, lng: -1.2540, color: 'bg-green-500' },
-    { id: 6, name: 'Local Pub Meetup', type: 'coffee', lat: 51.7500, lng: -1.2600, color: 'bg-orange-500' }
+    { id: 1, name: 'Cambridge Historic Tour', type: 'guides', lat: 52.2053, lng: 0.1218, color: 'bg-green-500' },
+    { id: 2, name: 'Kings College Chapel Audio', type: 'audio', lat: 52.2045, lng: 0.1165, color: 'bg-purple-500' },
+    { id: 3, name: 'Student Coffee Meetup', type: 'coffee', lat: 52.2038, lng: 0.1190, color: 'bg-orange-500' },
+    { id: 4, name: 'The Eagle Pub & Restaurant', type: 'dining', lat: 52.2042, lng: 0.1185, color: 'bg-red-500' },
+    { id: 5, name: 'Punting Tour Guide', type: 'guides', lat: 52.2028, lng: 0.1155, color: 'bg-green-500' },
+    { id: 6, name: 'Trinity College Meetup', type: 'coffee', lat: 52.2070, lng: 0.1200, color: 'bg-orange-500' }
   ];
 
   const filteredLocations = selectedCategory === 'all'
@@ -38,19 +38,17 @@ const MapScreen: React.FC = () => {
   return (
     <div className="w-full h-full flex flex-col bg-ios-bg font-sans relative">
 
-      {/* Map Container (Simulated) */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200">
-        {/* Simulated Map Background */}
-        <div className="w-full h-full relative overflow-hidden">
-          {/* Grid pattern to simulate map */}
-          <div className="absolute inset-0 opacity-20">
-            {[...Array(20)].map((_, i) => (
-              <div key={`h-${i}`} className="absolute w-full h-px bg-gray-300" style={{ top: `${i * 5}%` }}></div>
-            ))}
-            {[...Array(20)].map((_, i) => (
-              <div key={`v-${i}`} className="absolute h-full w-px bg-gray-300" style={{ left: `${i * 5}%` }}></div>
-            ))}
-          </div>
+      {/* Map Container - Cambridge OpenStreetMap */}
+      <div className="absolute inset-0 bg-gray-100">
+        {/* Embedded OpenStreetMap centered on Cambridge */}
+        <iframe
+          src="https://www.openstreetmap.org/export/embed.html?bbox=0.0850%2C52.1850%2C0.1650%2C52.2250&layer=mapnik&marker=52.2053%2C0.1218"
+          className="w-full h-full border-0"
+          title="Cambridge Map"
+          style={{ pointerEvents: 'auto' }}
+        />
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="w-full h-full relative overflow-hidden">
 
           {/* Location Markers */}
           {filteredLocations.map((location, idx) => (
@@ -83,6 +81,7 @@ const MapScreen: React.FC = () => {
           {/* Center Crosshair */}
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
             <div className="w-8 h-8 rounded-full border-2 border-ios-blue bg-ios-blue/20"></div>
+          </div>
           </div>
         </div>
       </div>
@@ -167,6 +166,26 @@ const MapScreen: React.FC = () => {
               View List
             </button>
           </div>
+        </div>
+      </div>
+
+      {/* iOS Blur Tab Bar */}
+      <div className="absolute bottom-0 left-0 w-full bg-white/80 ios-blur border-t border-black/5 pt-3 pb-6 px-6 flex justify-between items-center z-[100]">
+        <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('home')}>
+          <Home size={24} strokeWidth={2.5} />
+          <span className="text-[10px] font-medium">Explore</span>
+        </div>
+        <div className="flex flex-col items-center gap-1 text-ios-blue cursor-pointer">
+          <Compass size={24} strokeWidth={2.5} />
+          <span className="text-[10px] font-medium">Map</span>
+        </div>
+        <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('chat')}>
+          <MessageCircle size={24} strokeWidth={2.5} />
+          <span className="text-[10px] font-medium">Chat</span>
+        </div>
+        <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('profile')}>
+          <User size={24} strokeWidth={2.5} />
+          <span className="text-[10px] font-medium">Profile</span>
         </div>
       </div>
 
