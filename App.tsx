@@ -20,6 +20,9 @@ import RestaurantsScreen from './components/RestaurantsScreen';
 import RestaurantMenuScreen from './components/RestaurantMenuScreen';
 import RestaurantBookingScreen from './components/RestaurantBookingScreen';
 import ActiveRestaurantBookingScreen from './components/ActiveRestaurantBookingScreen';
+import ChatScreen from './components/ChatScreen';
+import ProfileScreen from './components/ProfileScreen';
+import MapScreen from './components/MapScreen';
 import { Wifi, Battery, Signal, CheckCircle } from 'lucide-react';
 
 const MainApp: React.FC = () => {
@@ -91,6 +94,10 @@ const MainApp: React.FC = () => {
           {currentScreen === 'restaurant-menu' && <RestaurantMenuScreen />}
           {currentScreen === 'restaurant-booking' && <RestaurantBookingScreen />}
           {currentScreen === 'active-restaurant-booking' && <ActiveRestaurantBookingScreen />}
+
+          {currentScreen === 'chat' && <ChatScreen />}
+          {currentScreen === 'profile' && <ProfileScreen />}
+          {currentScreen === 'map' && <MapScreen />}
         </div>
 
         {/* Home Indicator */}
