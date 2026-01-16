@@ -118,15 +118,15 @@ const RestaurantsScreen: React.FC = () => {
                 <Home size={24} strokeWidth={2.5} />
                 <span className="text-[10px] font-medium">Explore</span>
             </div>
-             <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer">
+             <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('map')}>
                 <Compass size={24} strokeWidth={2.5} />
                 <span className="text-[10px] font-medium">Map</span>
             </div>
-             <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer">
+             <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('chat')}>
                 <MessageCircle size={24} strokeWidth={2.5} />
                 <span className="text-[10px] font-medium">Chat</span>
             </div>
-             <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer">
+             <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('profile')}>
                 <User size={24} strokeWidth={2.5} />
                 <span className="text-[10px] font-medium">Profile</span>
             </div>

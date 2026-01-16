@@ -67,7 +67,7 @@ const ActiveCoffeeChatScreen: React.FC = () => {
           </div>
 
           <div className="flex gap-4">
-              <button className="flex-1 border-2 border-gray-200 text-gray-600 font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors uppercase text-sm">
+              <button onClick={() => navigate('chat')} className="flex-1 border-2 border-gray-200 text-gray-600 font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors uppercase text-sm cursor-pointer">
                   <MessageCircle className="w-5 h-5" />
                   Message
               </button>

@@ -1,12 +1,13 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-export type ScreenName = 
-  | 'landing' | 'login' | 'home' 
-  | 'guides' | 'guide-details' | 'booking' | 'active-tour' 
-  | 'audio-tours' | 'audio-details' | 'audio-booking' | 'active-audio-tour' 
-  | 'coffee-chats' | 'coffee-host-details' | 'coffee-booking' | 'active-coffee-chat' 
-  | 'restaurants' | 'restaurant-menu' | 'restaurant-booking' | 'active-restaurant-booking';
+export type ScreenName =
+  | 'landing' | 'login' | 'home'
+  | 'guides' | 'guide-details' | 'booking' | 'active-tour'
+  | 'audio-tours' | 'audio-details' | 'audio-booking' | 'active-audio-tour'
+  | 'coffee-chats' | 'coffee-host-details' | 'coffee-booking' | 'active-coffee-chat'
+  | 'restaurants' | 'restaurant-menu' | 'restaurant-booking' | 'active-restaurant-booking'
+  | 'chat' | 'profile' | 'map';
 
 interface User {
   name: string;

@@ -157,17 +157,17 @@ const ActiveAudioTourScreen: React.FC = () => {
           <div className="cursor-pointer hover:text-brand-primary transition-colors text-gray-300" onClick={() => navigate('home')}>
              <Home className="w-6 h-6 hover:fill-current" />
           </div>
-          
-          <div className="flex flex-col items-center gap-1 cursor-pointer text-brand-primary">
+
+          <div className="flex flex-col items-center gap-1 cursor-pointer text-brand-primary" onClick={() => navigate('map')}>
              <div className="bg-brand-primary rounded-full p-1 -mt-10 shadow-lg shadow-blue-300 ring-4 ring-white">
                  <Compass className="text-white w-6 h-6" />
              </div>
           </div>
-          
-          <div className="relative cursor-pointer">
+
+          <div className="relative cursor-pointer" onClick={() => navigate('chat')}>
              <MessageCircle className="text-gray-300 w-6 h-6 hover:text-brand-primary transition-colors" />
           </div>
-          <User className="text-gray-300 w-6 h-6 hover:text-brand-primary transition-colors cursor-pointer" />
+          <User className="text-gray-300 w-6 h-6 hover:text-brand-primary transition-colors cursor-pointer" onClick={() => navigate('profile')} />
       </div>
 
     </div>
