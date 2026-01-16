@@ -4,7 +4,7 @@ import { ArrowLeft, MessageCircle, Phone, MapPin } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 
 const ActiveCoffeeChatScreen: React.FC = () => {
-  const { navigate, selectedItem } = useAppContext();
+  const { navigate, selectedItem, showNotification } = useAppContext();
   const host = selectedItem;
 
   return (
@@ -71,7 +71,7 @@ const ActiveCoffeeChatScreen: React.FC = () => {
                   <MessageCircle className="w-5 h-5" />
                   Message
               </button>
-              <button className="flex-1 bg-brand-primary text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-300/50 flex items-center justify-center gap-2 hover:bg-brand-primaryHover transition-colors uppercase text-sm">
+              <button onClick={() => showNotification(`Calling ${host?.name || 'host'}...`)} className="flex-1 bg-brand-primary text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-300/50 flex items-center justify-center gap-2 hover:bg-brand-primaryHover transition-colors uppercase text-sm cursor-pointer active:scale-95">
                   <Phone className="w-5 h-5 fill-white" />
                   Call Host
               </button>

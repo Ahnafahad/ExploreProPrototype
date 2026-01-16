@@ -3,11 +3,15 @@ import React, { useState } from 'react';
 import { Search, SlidersHorizontal, Home, Compass, MessageCircle, User, Star } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { COFFEE_HOSTS } from '../utils/mockData';
+import FilterModal from './FilterModal';
 
 const CoffeeChatsScreen: React.FC = () => {
-  const { navigate } = useAppContext();
+  const { navigate, showNotification } = useAppContext();
   const [activeTab, setActiveTab] = useState<'hosts' | 'meetups'>('hosts');
   const [searchQuery, setSearchQuery] = useState('');
+  const [showFilterModal, setShowFilterModal] = useState(false);
+  const [selectedAvailability, setSelectedAvailability] = useState<string[]>([]);
+  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
 
   const meetups = [
     {
@@ -48,7 +52,7 @@ const CoffeeChatsScreen: React.FC = () => {
         <div className="absolute top-12 left-6 right-6 z-20 flex items-center gap-4 pt-2">
            {/* Search Bar with Blue Filter Icon (Combined Design) */}
            <div className="flex-1 flex gap-3">
-              <div className="w-12 h-12 bg-brand-primary rounded-full flex items-center justify-center shadow-lg shadow-blue-300">
+              <div onClick={() => setShowFilterModal(true)} className="w-12 h-12 bg-brand-primary rounded-full flex items-center justify-center shadow-lg shadow-blue-300 cursor-pointer active:scale-95 transition-transform">
                   <SlidersHorizontal className="w-6 h-6 text-white" />
               </div>
               <div className="flex-1 relative shadow-lg rounded-full">
@@ -173,7 +177,10 @@ const CoffeeChatsScreen: React.FC = () => {
                                  </div>
                                  <div className="flex items-center justify-between mt-2">
                                      <span className="text-brand-primary font-bold text-base">£{event.price}</span>
-                                     <button className="bg-brand-primary hover:bg-brand-primaryHover text-white text-[10px] font-bold py-2 px-6 rounded-lg shadow-md transition-colors">
+                                     <button
+                                       onClick={() => showNotification(`Joined: ${event.title}`)}
+                                       className="bg-brand-primary hover:bg-brand-primaryHover text-white text-[10px] font-bold py-2 px-6 rounded-lg shadow-md transition-colors cursor-pointer active:scale-95"
+                                     >
                                          Join
                                      </button>
                                  </div>
@@ -186,7 +193,7 @@ const CoffeeChatsScreen: React.FC = () => {
             {/* See More Link */}
             {(activeTab === 'hosts' ? filteredHosts.length > 0 : filteredMeetups.length > 0) && (
                 <div className="flex justify-end pt-2">
-                    <span className="text-brand-primary text-sm font-semibold cursor-pointer hover:underline flex items-center gap-1">
+                    <span onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-brand-primary text-sm font-semibold cursor-pointer hover:underline flex items-center gap-1">
                         See more <span className="text-lg">›</span>
                     </span>
                 </div>
@@ -214,6 +221,52 @@ const CoffeeChatsScreen: React.FC = () => {
           </div>
           <User className="text-gray-300 w-6 h-6 hover:text-brand-primary transition-colors cursor-pointer" onClick={() => navigate('profile')} />
       </div>
+
+      {/* Filter Modal */}
+      <FilterModal
+        isOpen={showFilterModal}
+        onClose={() => setShowFilterModal(false)}
+        title="Filter Coffee Chats"
+        sections={[
+          {
+            title: 'Availability',
+            options: [
+              { id: 'today', label: 'Available Today' },
+              { id: 'week', label: 'This Week' },
+              { id: 'weekend', label: 'Weekends' }
+            ],
+            selected: selectedAvailability,
+            onToggle: (id) => {
+              setSelectedAvailability(prev =>
+                prev.includes(id) ? prev.filter(a => a !== id) : [...prev, id]
+              );
+            },
+            multiSelect: true
+          },
+          {
+            title: 'Interests',
+            options: [
+              { id: 'tech', label: 'Technology' },
+              { id: 'business', label: 'Business' },
+              { id: 'creative', label: 'Creative Arts' },
+              { id: 'travel', label: 'Travel' },
+              { id: 'food', label: 'Food & Dining' }
+            ],
+            selected: selectedInterests,
+            onToggle: (id) => {
+              setSelectedInterests(prev =>
+                prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+              );
+            },
+            multiSelect: true
+          }
+        ]}
+        onApply={() => {}}
+        onClear={() => {
+          setSelectedAvailability([]);
+          setSelectedInterests([]);
+        }}
+      />
 
     </div>
   );

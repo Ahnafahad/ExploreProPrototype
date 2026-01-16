@@ -4,7 +4,7 @@ import { ArrowLeft, MapPin, Calendar, Clock, Users, Phone, Navigation, QrCode } 
 import { useAppContext } from '../context/AppContext';
 
 const ActiveRestaurantBookingScreen: React.FC = () => {
-  const { navigate } = useAppContext();
+  const { navigate, showNotification } = useAppContext();
 
   return (
     <div className="w-full h-full bg-gray-50 flex flex-col font-sans relative overflow-hidden">
@@ -90,11 +90,11 @@ const ActiveRestaurantBookingScreen: React.FC = () => {
 
           {/* Action Buttons */}
           <div className="flex gap-4 w-full mt-8">
-              <button className="flex-1 bg-white text-brand-dark border border-gray-200 font-bold py-3.5 rounded-xl shadow-sm hover:bg-gray-50 transition-colors text-sm flex items-center justify-center gap-2">
+              <button onClick={() => showNotification('Calling restaurant...')} className="flex-1 bg-white text-brand-dark border border-gray-200 font-bold py-3.5 rounded-xl shadow-sm hover:bg-gray-50 transition-colors text-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95">
                   <Phone className="w-4 h-4" />
                   Call
               </button>
-              <button className="flex-1 bg-brand-primary text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-300/50 hover:bg-brand-primaryHover transition-colors text-sm flex items-center justify-center gap-2">
+              <button onClick={() => showNotification('Opening directions...')} className="flex-1 bg-brand-primary text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-300/50 hover:bg-brand-primaryHover transition-colors text-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95">
                   <Navigation className="w-4 h-4 fill-white" />
                   Directions
               </button>

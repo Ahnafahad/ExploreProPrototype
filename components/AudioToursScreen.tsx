@@ -127,7 +127,13 @@ const AudioToursScreen: React.FC = () => {
                             {/* Bottom Row: Price & Button */}
                             <div className="flex items-center justify-between">
                               <span className="text-brand-dark font-bold text-base">£{tour.price.toFixed(2)}</span>
-                              <button className="bg-brand-primary text-white text-[10px] font-bold py-2 px-4 rounded-lg shadow-md hover:bg-brand-primaryHover transition-colors">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  navigate('audio-details', tour);
+                                }}
+                                className="bg-brand-primary text-white text-[10px] font-bold py-2 px-4 rounded-lg shadow-md hover:bg-brand-primaryHover transition-colors cursor-pointer active:scale-95"
+                              >
                                   Preview Tour
                               </button>
                             </div>

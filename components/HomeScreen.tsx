@@ -109,7 +109,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ language, setLanguage }) => {
           <div className="px-5 mb-8">
             <div className="flex justify-between items-end mb-3 px-1">
                 <h2 className="text-[22px] font-bold text-black tracking-tight">{content.featured}</h2>
-                <span className="text-ios-blue text-[15px] cursor-pointer active:opacity-50">See All</span>
+                <span onClick={() => navigate('guides')} className="text-ios-blue text-[15px] cursor-pointer active:opacity-50">See All</span>
             </div>
             
             {isLoading ? (

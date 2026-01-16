@@ -3,22 +3,44 @@ import React, { useState, useEffect } from 'react';
 import { Search, ChevronLeft, Star, MapPin, SlidersHorizontal, ArrowLeft } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { GUIDES } from '../utils/mockData';
+import FilterModal from './FilterModal';
 
 const GuidesScreen: React.FC = () => {
   const { navigate, goBack } = useAppContext();
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showFilterModal, setShowFilterModal] = useState(false);
+  const [selectedRatings, setSelectedRatings] = useState<string[]>([]);
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
+  const [selectedPriceRanges, setSelectedPriceRanges] = useState<string[]>([]);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 1000);
     return () => clearTimeout(timer);
   }, []);
 
-  const filteredGuides = GUIDES.filter(guide => 
-    guide.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    guide.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    guide.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+  const filteredGuides = GUIDES.filter(guide => {
+    // Search filter
+    const matchesSearch = guide.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      guide.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      guide.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+
+    // Rating filter
+    const matchesRating = selectedRatings.length === 0 || selectedRatings.some(rating => {
+      const ratingNum = parseFloat(rating);
+      return guide.rating >= ratingNum;
+    });
+
+    // Language filter
+    const matchesLanguage = selectedLanguages.length === 0 || selectedLanguages.some(lang =>
+      guide.tags.some(tag => tag.toLowerCase().includes(lang.toLowerCase()))
+    );
+
+    // Price filter (simplified - you can enhance this based on actual pricing structure)
+    const matchesPriceRange = selectedPriceRanges.length === 0 || true;
+
+    return matchesSearch && matchesRating && matchesLanguage && matchesPriceRange;
+  });
 
   return (
     <div className="w-full h-full bg-ios-bg font-sans relative">
@@ -58,7 +80,7 @@ const GuidesScreen: React.FC = () => {
               </div>
           </div>
           <div className="pointer-events-auto">
-              <button className="w-10 h-10 bg-white rounded-full shadow-ios flex items-center justify-center">
+              <button onClick={() => setShowFilterModal(true)} className="w-10 h-10 bg-white rounded-full shadow-ios flex items-center justify-center cursor-pointer active:scale-95 transition-transform">
                  <SlidersHorizontal size={18} className="text-black" />
               </button>
           </div>
@@ -114,6 +136,67 @@ const GuidesScreen: React.FC = () => {
               )}
           </div>
       </div>
+
+      {/* Filter Modal */}
+      <FilterModal
+        isOpen={showFilterModal}
+        onClose={() => setShowFilterModal(false)}
+        title="Filter Guides"
+        sections={[
+          {
+            title: 'Rating',
+            options: [
+              { id: '4.5', label: '4.5+ Stars' },
+              { id: '4.0', label: '4.0+ Stars' },
+              { id: '3.5', label: '3.5+ Stars' }
+            ],
+            selected: selectedRatings,
+            onToggle: (id) => {
+              setSelectedRatings(prev =>
+                prev.includes(id) ? prev.filter(r => r !== id) : [...prev, id]
+              );
+            },
+            multiSelect: true
+          },
+          {
+            title: 'Languages',
+            options: [
+              { id: 'english', label: 'English' },
+              { id: 'chinese', label: 'Chinese' },
+              { id: 'spanish', label: 'Spanish' },
+              { id: 'french', label: 'French' }
+            ],
+            selected: selectedLanguages,
+            onToggle: (id) => {
+              setSelectedLanguages(prev =>
+                prev.includes(id) ? prev.filter(l => l !== id) : [...prev, id]
+              );
+            },
+            multiSelect: true
+          },
+          {
+            title: 'Price Range',
+            options: [
+              { id: 'budget', label: 'Budget (£0-50)' },
+              { id: 'mid', label: 'Mid-Range (£50-150)' },
+              { id: 'premium', label: 'Premium (£150+)' }
+            ],
+            selected: selectedPriceRanges,
+            onToggle: (id) => {
+              setSelectedPriceRanges(prev =>
+                prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id]
+              );
+            },
+            multiSelect: true
+          }
+        ]}
+        onApply={() => {}}
+        onClear={() => {
+          setSelectedRatings([]);
+          setSelectedLanguages([]);
+          setSelectedPriceRanges([]);
+        }}
+      />
 
     </div>
   );

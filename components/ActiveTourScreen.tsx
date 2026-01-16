@@ -1,12 +1,13 @@
 
-import React from 'react';
-import { ArrowLeft, Clock, MessageCircle, Phone } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowLeft, Clock, MessageCircle, Phone, X, MapPin, Calendar, User as UserIcon } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { Guide } from '../utils/mockData';
 
 const ActiveTourScreen: React.FC = () => {
-  const { navigate, selectedItem, user } = useAppContext();
+  const { navigate, selectedItem, user, showNotification } = useAppContext();
   const guide = selectedItem as Guide;
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
 
   if (!guide) return null;
 
@@ -129,7 +130,7 @@ const ActiveTourScreen: React.FC = () => {
             
             <h2 className="text-gray-400 font-medium text-lg mb-4">Your tour has started!</h2>
             
-            <button className="border border-gray-300 text-gray-500 font-bold text-xs py-3 px-8 rounded-xl hover:bg-gray-50 transition-colors uppercase tracking-wider mb-4">
+            <button onClick={() => setShowDetailsModal(true)} className="border border-gray-300 text-gray-500 font-bold text-xs py-3 px-8 rounded-xl hover:bg-gray-50 transition-colors uppercase tracking-wider mb-4 cursor-pointer">
                 View Booking Details
             </button>
             
@@ -143,7 +144,7 @@ const ActiveTourScreen: React.FC = () => {
                     <MessageCircle className="w-5 h-5 fill-gray-500" />
                     Message
                 </button>
-                <button className="flex-1 bg-brand-primary text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-300/50 flex items-center justify-center gap-2 hover:bg-brand-primaryHover transition-colors uppercase text-sm">
+                <button onClick={() => showNotification(`Calling ${guide.name}...`)} className="flex-1 bg-brand-primary text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-300/50 flex items-center justify-center gap-2 hover:bg-brand-primaryHover transition-colors uppercase text-sm cursor-pointer active:scale-95">
                     <Phone className="w-5 h-5 fill-white" />
                     Call
                 </button>
@@ -151,6 +152,117 @@ const ActiveTourScreen: React.FC = () => {
 
         </div>
       </div>
+
+      {/* Booking Details Modal */}
+      {showDetailsModal && (
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/50 z-[200] animate-[fadeIn_0.2s_ease-out]"
+            onClick={() => setShowDetailsModal(false)}
+          />
+
+          {/* Modal */}
+          <div className="fixed bottom-0 left-0 right-0 z-[201] animate-[slideUp_0.3s_ease-out]">
+            <div className="bg-white rounded-t-[24px] max-h-[80vh] flex flex-col">
+
+              {/* Header */}
+              <div className="flex items-center justify-between px-5 pt-5 pb-4 border-b border-gray-100">
+                <h2 className="text-[20px] font-bold text-black">Booking Details</h2>
+                <button
+                  onClick={() => setShowDetailsModal(false)}
+                  className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center cursor-pointer active:bg-gray-200 transition-colors"
+                >
+                  <X size={20} className="text-gray-600" />
+                </button>
+              </div>
+
+              {/* Content */}
+              <div className="flex-1 overflow-y-auto px-5 py-6 scrollbar-hide">
+                <div className="space-y-6">
+                  {/* Guide Info */}
+                  <div className="flex items-center gap-4 pb-4 border-b border-gray-100">
+                    <img src={guide.image} className="w-16 h-16 rounded-full object-cover" />
+                    <div>
+                      <h3 className="text-[17px] font-semibold text-black">{guide.name}</h3>
+                      <p className="text-sm text-gray-500">{guide.title}</p>
+                    </div>
+                  </div>
+
+                  {/* Booking Info */}
+                  <div className="space-y-3">
+                    <div className="flex items-start gap-3">
+                      <Calendar className="w-5 h-5 text-ios-blue mt-0.5" />
+                      <div>
+                        <p className="text-sm font-semibold text-black">Date & Time</p>
+                        <p className="text-sm text-gray-500">Today, {new Date().toLocaleDateString()} at 2:00 PM</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <MapPin className="w-5 h-5 text-ios-blue mt-0.5" />
+                      <div>
+                        <p className="text-sm font-semibold text-black">Meeting Point</p>
+                        <p className="text-sm text-gray-500">Oxford Visitor Centre, Broad Street</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <Clock className="w-5 h-5 text-ios-blue mt-0.5" />
+                      <div>
+                        <p className="text-sm font-semibold text-black">Duration</p>
+                        <p className="text-sm text-gray-500">2 hours</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <UserIcon className="w-5 h-5 text-ios-blue mt-0.5" />
+                      <div>
+                        <p className="text-sm font-semibold text-black">Participants</p>
+                        <p className="text-sm text-gray-500">{user.name}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Pricing */}
+                  <div className="bg-ios-bg rounded-[16px] p-4 space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Tour Price</span>
+                      <span className="font-semibold text-black">£{guide.price}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Service Fee</span>
+                      <span className="font-semibold text-black">£{(guide.price * 0.1).toFixed(2)}</span>
+                    </div>
+                    <div className="border-t border-gray-200 pt-2 flex justify-between">
+                      <span className="font-semibold text-black">Total</span>
+                      <span className="font-bold text-ios-blue text-lg">£{(guide.price * 1.1).toFixed(2)}</span>
+                    </div>
+                  </div>
+
+                  {/* Booking ID */}
+                  <div className="text-center py-4">
+                    <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Booking ID</p>
+                    <p className="text-sm font-mono font-semibold text-gray-600">#TOUR-{Date.now().toString().slice(-6)}</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <style>{`
+            @keyframes fadeIn {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+            @keyframes slideUp {
+              from { transform: translateY(100%); }
+              to { transform: translateY(0); }
+            }
+          `}</style>
+        </>
+      )}
 
     </div>
   );

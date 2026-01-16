@@ -2,11 +2,15 @@
 import React, { useState } from 'react';
 import { Search, Home, Compass, MessageCircle, User, Star, MapPin, ChevronDown, SlidersHorizontal, Globe, Tag, ArrowRight } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
+import FilterModal from './FilterModal';
 
 const RestaurantMenuScreen: React.FC = () => {
   const { navigate, goBack } = useAppContext();
   const [language, setLanguage] = useState<'en' | 'zh'>('en');
   const [searchQuery, setSearchQuery] = useState('');
+  const [showFilterModal, setShowFilterModal] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedDietary, setSelectedDietary] = useState<string[]>([]);
 
   const menuItems = [
     {
@@ -128,7 +132,7 @@ const RestaurantMenuScreen: React.FC = () => {
         {/* CONTROLS ROW */}
         <div className="px-6 flex items-center gap-3 mb-6">
              {/* Filter Button */}
-             <div className="w-10 h-10 bg-brand-primary rounded-full flex items-center justify-center shadow-md shadow-blue-200 shrink-0">
+             <div onClick={() => setShowFilterModal(true)} className="w-10 h-10 bg-brand-primary rounded-full flex items-center justify-center shadow-md shadow-blue-200 shrink-0 cursor-pointer active:scale-95 transition-transform">
                  <SlidersHorizontal className="w-5 h-5 text-white" />
              </div>
              
@@ -183,7 +187,12 @@ const RestaurantMenuScreen: React.FC = () => {
                              
                              <div className="flex items-center justify-between mt-2">
                                  <span className="text-brand-primary font-bold text-base">$ {item.price}</span>
-                                 <span className="text-[10px] bg-gray-100 text-gray-500 px-2 py-1 rounded-full">Menu Preview</span>
+                                 <span
+                                   onClick={() => showNotification(`Preview: ${language === 'en' ? item.name : item.nameZh}`)}
+                                   className="text-[10px] bg-gray-100 text-gray-500 px-2 py-1 rounded-full cursor-pointer hover:bg-gray-200 active:scale-95 transition-all"
+                                 >
+                                   Menu Preview
+                                 </span>
                              </div>
                          </div>
                      </div>
@@ -224,6 +233,53 @@ const RestaurantMenuScreen: React.FC = () => {
           </div>
           <User className="text-gray-300 w-6 h-6 hover:text-brand-primary transition-colors cursor-pointer" onClick={() => navigate('profile')} />
       </div>
+
+      {/* Filter Modal */}
+      <FilterModal
+        isOpen={showFilterModal}
+        onClose={() => setShowFilterModal(false)}
+        title="Filter Menu"
+        sections={[
+          {
+            title: 'Category',
+            options: [
+              { id: 'sushi', label: 'Sushi' },
+              { id: 'appetizers', label: 'Appetizers' },
+              { id: 'mains', label: 'Main Courses' },
+              { id: 'desserts', label: 'Desserts' },
+              { id: 'drinks', label: 'Drinks' }
+            ],
+            selected: selectedCategories,
+            onToggle: (id) => {
+              setSelectedCategories(prev =>
+                prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]
+              );
+            },
+            multiSelect: true
+          },
+          {
+            title: 'Dietary Preferences',
+            options: [
+              { id: 'vegetarian', label: 'Vegetarian' },
+              { id: 'vegan', label: 'Vegan' },
+              { id: 'gluten-free', label: 'Gluten-Free' },
+              { id: 'spicy', label: 'Spicy' }
+            ],
+            selected: selectedDietary,
+            onToggle: (id) => {
+              setSelectedDietary(prev =>
+                prev.includes(id) ? prev.filter(d => d !== id) : [...prev, id]
+              );
+            },
+            multiSelect: true
+          }
+        ]}
+        onApply={() => {}}
+        onClear={() => {
+          setSelectedCategories([]);
+          setSelectedDietary([]);
+        }}
+      />
 
     </div>
   );
