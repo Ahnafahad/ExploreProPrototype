@@ -12,12 +12,12 @@ const ActiveCoffeeChatScreen: React.FC = () => {
       
       {/* MAP BACKGROUND */}
       <div className="absolute inset-0 bg-gray-100">
-         <iframe 
-            width="100%" 
-            height="100%" 
+         <iframe
+            width="100%"
+            height="100%"
             style={{ border: 0, opacity: 0.8, filter: 'grayscale(0.3)' }}
-            loading="lazy" 
-            src={`https://maps.google.com/maps?q=Market+St,Cambridge,UK&t=m&z=17&ie=UTF8&iwloc=&output=embed`}
+            loading="lazy"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=0.1168%2C52.2003%2C0.1268%2C52.2103&layer=mapnik&marker=52.2053%2C0.1218"
             title="Cafe Map"
             className="pointer-events-none"
         ></iframe>

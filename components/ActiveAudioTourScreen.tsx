@@ -20,12 +20,12 @@ const ActiveAudioTourScreen: React.FC = () => {
       {/* MAP SECTION */}
       <div className="relative w-full flex-1 bg-gray-100 overflow-hidden">
          {/* Simulated Map */}
-         <iframe 
-            width="100%" 
-            height="100%" 
+         <iframe
+            width="100%"
+            height="100%"
             style={{ border: 0, opacity: 0.8, filter: 'grayscale(0.1)' }}
-            loading="lazy" 
-            src={`https://maps.google.com/maps?q=Cambridge,UK&t=m&z=16&ie=UTF8&iwloc=&output=embed`}
+            loading="lazy"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=0.0918%2C52.1853%2C0.1518%2C52.2253&layer=mapnik"
             title="Audio Tour Map"
             className="pointer-events-none"
         ></iframe>

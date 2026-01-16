@@ -40,14 +40,14 @@ const AudioToursScreen: React.FC = () => {
              {/* Gradient Overlay for top fade */}
              <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-sky-400/30 to-transparent z-10 pointer-events-none"></div>
 
-             <iframe 
-                width="100%" 
-                height="120%" 
+             <iframe
+                width="100%"
+                height="120%"
                 style={{ border: 0, filter: 'saturate(1.2) hue-rotate(-10deg)', marginTop: '-10%' }}
-                loading="lazy" 
-                allowFullScreen 
+                loading="lazy"
+                allowFullScreen
                 referrerPolicy="no-referrer-when-downgrade"
-                src={`https://maps.google.com/maps?q=Cambridge,UK&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                src="https://www.openstreetmap.org/export/embed.html?bbox=0.0818%2C52.1753%2C0.1618%2C52.2353&layer=mapnik"
                 title="Cambridge Audio Map"
             ></iframe>
             

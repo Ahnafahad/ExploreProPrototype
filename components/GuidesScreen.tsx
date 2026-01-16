@@ -25,12 +25,12 @@ const GuidesScreen: React.FC = () => {
       
       {/* Full Screen Map */}
       <div className="absolute inset-0 z-0">
-         <iframe 
-            width="100%" 
-            height="100%" 
+         <iframe
+            width="100%"
+            height="100%"
             style={{ border: 0 }}
-            loading="lazy" 
-            src={`https://maps.google.com/maps?q=Cambridge,UK&t=m&z=15&ie=UTF8&iwloc=&output=embed`}
+            loading="lazy"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=0.0818%2C52.1753%2C0.1618%2C52.2353&layer=mapnik"
             title="Map"
             className="grayscale-[0.2]"
         ></iframe>

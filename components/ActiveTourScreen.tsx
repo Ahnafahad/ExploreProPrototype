@@ -50,12 +50,12 @@ const ActiveTourScreen: React.FC = () => {
       {/* MAP SECTION */}
       <div className="relative w-full flex-1 bg-gray-100 overflow-hidden">
          {/* Simulated Map Background with Iframe */}
-         <iframe 
-            width="100%" 
-            height="120%" 
+         <iframe
+            width="100%"
+            height="120%"
             style={{ border: 0, opacity: 0.6, filter: 'grayscale(0.2) contrast(1.1)', marginTop: '-10%' }}
-            loading="lazy" 
-            src={`https://maps.google.com/maps?q=Cambridge,UK&t=m&z=15&ie=UTF8&iwloc=&output=embed`}
+            loading="lazy"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=0.0818%2C52.1753%2C0.1618%2C52.2353&layer=mapnik"
             title="Active Tour Map"
             className="pointer-events-none"
         ></iframe>
