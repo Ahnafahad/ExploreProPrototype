@@ -4,7 +4,7 @@ import { ArrowLeft, MessageCircle, Phone, MapPin } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 
 const ActiveCoffeeChatScreen: React.FC = () => {
-  const { navigate, selectedItem } = useAppContext();
+  const { navigate, goBack, selectedItem } = useAppContext();
   const host = selectedItem;
 
   return (
@@ -25,7 +25,7 @@ const ActiveCoffeeChatScreen: React.FC = () => {
 
       {/* Top Overlay */}
       <div className="absolute top-0 left-0 w-full pt-12 px-6 z-20">
-         <button onClick={() => navigate('home')} className="bg-white text-brand-dark py-2 px-4 rounded-full shadow-lg flex items-center gap-2 font-bold text-xs hover:bg-gray-50 transition-colors">
+         <button onClick={goBack} className="bg-white text-brand-dark py-2 px-4 rounded-full shadow-lg flex items-center gap-2 font-bold text-xs hover:bg-gray-50 transition-colors">
             <ArrowLeft className="w-4 h-4" />
             HOME
          </button>

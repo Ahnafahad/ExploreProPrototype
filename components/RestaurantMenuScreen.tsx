@@ -1,7 +1,8 @@
 
 import React, { useState } from 'react';
-import { Search, Home, Compass, MessageCircle, User, Star, MapPin, ChevronDown, SlidersHorizontal, Globe, Tag, ArrowRight } from 'lucide-react';
+import { Search, Star, MapPin, ChevronDown, SlidersHorizontal, Globe, Tag, ArrowRight } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
+import { TabBar } from './shared/TabBar';
 
 const RestaurantMenuScreen: React.FC = () => {
   const { navigate, goBack } = useAppContext();
@@ -206,24 +207,8 @@ const RestaurantMenuScreen: React.FC = () => {
           </button>
       </div>
 
-      {/* Bottom Navigation */}
-      <div className="absolute bottom-6 left-6 right-6 bg-white rounded-full shadow-2xl shadow-blue-900/10 px-8 py-4 flex justify-between items-center z-50">
-          <div className="cursor-pointer hover:text-brand-primary transition-colors text-gray-300" onClick={() => navigate('home')}>
-             <Home className="w-6 h-6 hover:fill-current" />
-          </div>
-
-          <div className="flex flex-col items-center gap-1 cursor-pointer text-brand-primary" onClick={() => navigate('map')}>
-             <div className="bg-brand-primary rounded-full p-1 -mt-6 shadow-lg shadow-blue-300 ring-4 ring-white">
-                 <Compass className="text-white w-6 h-6" />
-             </div>
-          </div>
-
-          <div className="relative cursor-pointer" onClick={() => navigate('chat')}>
-             <MessageCircle className="text-gray-300 w-6 h-6 hover:text-brand-primary transition-colors" />
-             <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></div>
-          </div>
-          <User className="text-gray-300 w-6 h-6 hover:text-brand-primary transition-colors cursor-pointer" onClick={() => navigate('profile')} />
-      </div>
+      {/* Tab Bar */}
+      <TabBar activeTab="map" onNavigate={navigate} />
 
     </div>
   );

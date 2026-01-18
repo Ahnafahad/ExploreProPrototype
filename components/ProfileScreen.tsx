@@ -2,13 +2,17 @@
 import React from 'react';
 import {
   ArrowLeft, ChevronRight, User, Heart, Bell, CreditCard,
-  Globe, Shield, HelpCircle, LogOut, Star, MapPin, Calendar,
-  Home, Compass, MessageCircle
+  Globe, Shield, HelpCircle, LogOut, Star, MapPin, Calendar
 } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
+import { TabBar } from './shared/TabBar';
 
 const ProfileScreen: React.FC = () => {
-  const { goBack, navigate, user, bookings } = useAppContext();
+  const { goBack, navigate, user, bookings, showNotification } = useAppContext();
+
+  const handleMenuClick = (feature: string) => {
+    showNotification(`${feature} coming soon!`);
+  };
 
   const stats = [
     { label: 'Tours Taken', value: bookings.length, icon: <MapPin size={20} /> },
@@ -75,7 +79,7 @@ const ProfileScreen: React.FC = () => {
             <div className="flex-1">
               <h2 className="text-[24px] font-bold text-black mb-1">{user.name || 'Guest User'}</h2>
               <p className="text-sm text-gray-500 mb-2">{user.email || 'guest@explorerpro.com'}</p>
-              <button className="bg-ios-bg text-black text-sm font-semibold px-4 py-2 rounded-[10px] cursor-pointer active:bg-gray-200 transition-colors">
+              <button onClick={() => handleMenuClick('Edit Profile')} className="bg-ios-bg text-black text-sm font-semibold px-4 py-2 rounded-[10px] cursor-pointer active:bg-gray-200 transition-colors">
                 Edit Profile
               </button>
             </div>
@@ -106,6 +110,7 @@ const ProfileScreen: React.FC = () => {
                 {section.items.map((item, itemIdx) => (
                   <div
                     key={itemIdx}
+                    onClick={() => handleMenuClick(item.label)}
                     className="flex items-center justify-between px-4 py-4 cursor-pointer active:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0"
                   >
                     <div className="flex items-center gap-3">
@@ -130,7 +135,7 @@ const ProfileScreen: React.FC = () => {
 
           {/* Logout Button */}
           <div className="bg-white rounded-[16px] overflow-hidden shadow-ios mb-6">
-            <button className="w-full flex items-center justify-center gap-3 px-4 py-4 cursor-pointer active:bg-gray-50 transition-colors">
+            <button onClick={() => handleMenuClick('Log Out')} className="w-full flex items-center justify-center gap-3 px-4 py-4 cursor-pointer active:bg-gray-50 transition-colors">
               <LogOut size={22} className="text-red-500" />
               <span className="text-[17px] text-red-500 font-semibold">Log Out</span>
             </button>
@@ -145,25 +150,8 @@ const ProfileScreen: React.FC = () => {
 
       </div>
 
-      {/* iOS Blur Tab Bar */}
-      <div className="absolute bottom-0 left-0 w-full bg-white/80 ios-blur border-t border-black/5 pt-3 pb-6 px-6 flex justify-between items-center z-[100]">
-        <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('home')}>
-          <Home size={24} strokeWidth={2.5} />
-          <span className="text-[10px] font-medium">Explore</span>
-        </div>
-        <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('map')}>
-          <Compass size={24} strokeWidth={2.5} />
-          <span className="text-[10px] font-medium">Map</span>
-        </div>
-        <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('chat')}>
-          <MessageCircle size={24} strokeWidth={2.5} />
-          <span className="text-[10px] font-medium">Chat</span>
-        </div>
-        <div className="flex flex-col items-center gap-1 text-ios-blue cursor-pointer">
-          <User size={24} strokeWidth={2.5} />
-          <span className="text-[10px] font-medium">Profile</span>
-        </div>
-      </div>
+      {/* Tab Bar */}
+      <TabBar activeTab="profile" onNavigate={navigate} />
 
     </div>
   );

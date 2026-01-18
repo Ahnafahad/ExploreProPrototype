@@ -1,11 +1,12 @@
 
 import React, { useState } from 'react';
-import { Search, SlidersHorizontal, Home, Compass, MessageCircle, User, Star } from 'lucide-react';
+import { Search, SlidersHorizontal, Star, Coffee, ArrowLeft } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { COFFEE_HOSTS } from '../utils/mockData';
+import { TabBar } from './shared/TabBar';
 
 const CoffeeChatsScreen: React.FC = () => {
-  const { navigate } = useAppContext();
+  const { navigate, goBack } = useAppContext();
   const [activeTab, setActiveTab] = useState<'hosts' | 'meetups'>('hosts');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -45,7 +46,11 @@ const CoffeeChatsScreen: React.FC = () => {
       {/* MAP SECTION */}
       <div className="h-[45%] w-full relative">
         {/* Header Overlay */}
-        <div className="absolute top-12 left-6 right-6 z-20 flex items-center gap-4 pt-2">
+        <div className="absolute top-12 left-6 right-6 z-20 flex items-center gap-3 pt-2">
+           {/* Back Button */}
+           <button onClick={goBack} className="w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center flex-shrink-0">
+               <ArrowLeft size={20} className="text-black" />
+           </button>
            {/* Search Bar with Blue Filter Icon (Combined Design) */}
            <div className="flex-1 flex gap-3">
               <div className="w-12 h-12 bg-brand-primary rounded-full flex items-center justify-center shadow-lg shadow-blue-300">
@@ -55,8 +60,8 @@ const CoffeeChatsScreen: React.FC = () => {
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                     <Search className="h-5 w-5 text-gray-400" />
                 </div>
-                <input 
-                    type="text" 
+                <input
+                    type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder={activeTab === 'hosts' ? "Search coffee hosts..." : "Search coffee chats..."}
@@ -85,17 +90,23 @@ const CoffeeChatsScreen: React.FC = () => {
             {/* Conditional Map Pins */}
             {activeTab === 'hosts' ? (
                 <>
-                    <div className="absolute top-[40%] left-[30%] transform -translate-x-1/2 -translate-y-1/2 z-10">
-                        <MapMarker image={COFFEE_HOSTS[0].image} active />
+                    <div className="absolute top-[40%] left-[30%] transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-auto">
+                        <CoffeeHostMarker index={1} />
                     </div>
-                    <div className="absolute top-[55%] left-[60%] transform -translate-x-1/2 -translate-y-1/2 z-10">
-                        <MapMarker image={COFFEE_HOSTS[1].image} />
+                    <div className="absolute top-[55%] left-[60%] transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-auto">
+                        <CoffeeHostMarker index={2} />
+                    </div>
+                    <div className="absolute top-[35%] left-[70%] transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-auto">
+                        <CoffeeHostMarker index={3} />
                     </div>
                 </>
             ) : (
                 <>
-                    <div className="absolute top-[40%] left-[30%] transform -translate-x-1/2 -translate-y-1/2 z-10">
-                        <EventPin />
+                    <div className="absolute top-[40%] left-[30%] transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-auto">
+                        <CoffeeMeetupMarker index={1} />
+                    </div>
+                    <div className="absolute top-[50%] left-[65%] transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-auto">
+                        <CoffeeMeetupMarker index={2} />
                     </div>
                 </>
             )}
@@ -196,48 +207,59 @@ const CoffeeChatsScreen: React.FC = () => {
 
       </div>
 
-      {/* Bottom Navigation */}
-      <div className="absolute bottom-6 left-6 right-6 bg-white rounded-full shadow-2xl shadow-blue-900/10 px-8 py-4 flex justify-between items-center z-50">
-          <div className="cursor-pointer hover:text-brand-primary transition-colors text-gray-300" onClick={() => navigate('home')}>
-             <Home className="w-6 h-6 hover:fill-current" />
-          </div>
-
-          <div className="flex flex-col items-center gap-1 cursor-pointer text-brand-primary" onClick={() => navigate('map')}>
-             <div className="bg-brand-primary rounded-full p-1 -mt-6 shadow-lg shadow-blue-300 ring-4 ring-white">
-                 <Compass className="text-white w-6 h-6" />
-             </div>
-          </div>
-
-          <div className="relative cursor-pointer" onClick={() => navigate('chat')}>
-             <MessageCircle className="text-gray-300 w-6 h-6 hover:text-brand-primary transition-colors" />
-             <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></div>
-          </div>
-          <User className="text-gray-300 w-6 h-6 hover:text-brand-primary transition-colors cursor-pointer" onClick={() => navigate('profile')} />
-      </div>
+      {/* Tab Bar */}
+      <TabBar activeTab="map" onNavigate={navigate} />
 
     </div>
   );
 };
 
-// Custom SVG Component for Map Marker with Avatar (Reused)
-const MapMarker: React.FC<{ image: string; active?: boolean }> = ({ image, active }) => (
-    <div className={`relative w-12 h-14 drop-shadow-xl transform hover:-translate-y-1 transition-transform duration-300 ${active ? 'scale-110 z-20' : 'z-10'}`}>
-        <svg viewBox="0 0 100 120" className={`w-full h-full fill-current ${active ? 'text-brand-primary' : 'text-gray-400'}`}>
-            <path d="M50,0 C22.4,0 0,22.4 0,50 C0,77.6 50,120 50,120 C50,120 100,77.6 100,50 C100,22.4 77.6,0 50,0 Z" />
-            <circle cx="50" cy="50" r="45" fill="white" />
-        </svg>
-        <div className="absolute top-1.5 left-1.5 w-9 h-9 rounded-full overflow-hidden">
-             <img src={image} alt="Marker" className="w-full h-full object-cover" />
+// Coffee Host Map Marker Component
+const CoffeeHostMarker: React.FC<{ index: number }> = ({ index }) => (
+  <div className="relative cursor-pointer group">
+    {/* Pin Stem */}
+    <div className="absolute top-12 left-1/2 -translate-x-1/2 w-0.5 h-8 bg-gray-800/30 z-0"></div>
+
+    {/* Badge with Animation */}
+    <div className="relative animate-[bounce_2s_ease-in-out_infinite]" style={{ animationDelay: `${index * 0.15}s` }}>
+      {/* Pulse Ring */}
+      <div className="absolute inset-0 bg-orange-500 rounded-full animate-ping opacity-75"></div>
+
+      {/* Main Badge */}
+      <div className="relative w-12 h-12 bg-orange-500 rounded-full shadow-lg border-3 border-white flex items-center justify-center text-white hover:scale-110 transition-transform">
+        <Coffee className="w-6 h-6" />
+
+        {/* Counter Badge */}
+        <div className="absolute -top-1 -right-1 w-5 h-5 bg-white rounded-full shadow-md flex items-center justify-center">
+          <span className="text-[10px] font-bold text-gray-800">{index}</span>
         </div>
+      </div>
     </div>
+  </div>
 );
 
-// Custom SVG Component for Event Pin
-const EventPin: React.FC = () => (
-    <div className="relative w-10 h-10 drop-shadow-lg bg-white rounded-full flex items-center justify-center border-2 border-brand-primary transform hover:scale-110 transition-transform">
-        <Star className="w-5 h-5 text-brand-primary fill-brand-primary" />
-        <div className="absolute -bottom-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-brand-primary rotate-45 -z-10"></div>
+// Coffee Meetup Map Marker Component
+const CoffeeMeetupMarker: React.FC<{ index: number }> = ({ index }) => (
+  <div className="relative cursor-pointer group">
+    {/* Pin Stem */}
+    <div className="absolute top-12 left-1/2 -translate-x-1/2 w-0.5 h-8 bg-gray-800/30 z-0"></div>
+
+    {/* Badge with Animation */}
+    <div className="relative animate-[bounce_2s_ease-in-out_infinite]" style={{ animationDelay: `${index * 0.15}s` }}>
+      {/* Pulse Ring */}
+      <div className="absolute inset-0 bg-orange-400 rounded-full animate-ping opacity-75"></div>
+
+      {/* Main Badge */}
+      <div className="relative w-12 h-12 bg-orange-400 rounded-full shadow-lg border-3 border-white flex items-center justify-center text-white hover:scale-110 transition-transform">
+        <Coffee className="w-6 h-6" />
+
+        {/* Counter Badge */}
+        <div className="absolute -top-1 -right-1 w-5 h-5 bg-white rounded-full shadow-md flex items-center justify-center">
+          <span className="text-[10px] font-bold text-gray-800">{index}</span>
+        </div>
+      </div>
     </div>
+  </div>
 );
 
 export default CoffeeChatsScreen;

@@ -4,14 +4,14 @@ import { ArrowLeft, Play, Pause, SkipBack, SkipForward, ChevronDown, Compass, Me
 import { useAppContext } from '../context/AppContext';
 
 const ActiveAudioTourScreen: React.FC = () => {
-  const { navigate } = useAppContext();
+  const { navigate, goBack } = useAppContext();
 
   return (
     <div className="w-full h-full bg-white flex flex-col font-sans relative overflow-hidden">
       
       {/* HEADER */}
       <div className="pt-12 pb-4 px-6 bg-white z-20 flex items-center gap-4">
-        <button onClick={() => navigate('home')} className="p-2 -ml-2 rounded-full hover:bg-gray-100 transition-colors">
+        <button onClick={goBack} className="p-2 -ml-2 rounded-full hover:bg-gray-100 transition-colors">
           <ArrowLeft className="w-6 h-6 text-black" />
         </button>
         <h1 className="text-black font-bold text-lg">Audio Tour in Progress</h1>

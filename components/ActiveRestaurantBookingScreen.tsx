@@ -4,14 +4,14 @@ import { ArrowLeft, MapPin, Calendar, Clock, Users, Phone, Navigation, QrCode } 
 import { useAppContext } from '../context/AppContext';
 
 const ActiveRestaurantBookingScreen: React.FC = () => {
-  const { navigate } = useAppContext();
+  const { navigate, goBack } = useAppContext();
 
   return (
     <div className="w-full h-full bg-gray-50 flex flex-col font-sans relative overflow-hidden">
       
       {/* HEADER */}
       <div className="pt-12 pb-4 px-6 bg-transparent z-20">
-         <button onClick={() => navigate('home')} className="bg-white text-brand-dark py-2 px-4 rounded-full shadow-sm border border-gray-100 flex items-center gap-2 font-bold text-xs hover:bg-gray-50 transition-colors">
+         <button onClick={goBack} className="bg-white text-brand-dark py-2 px-4 rounded-full shadow-sm border border-gray-100 flex items-center gap-2 font-bold text-xs hover:bg-gray-50 transition-colors">
             <ArrowLeft className="w-4 h-4" />
             Home
          </button>

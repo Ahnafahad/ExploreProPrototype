@@ -2,12 +2,13 @@
 import React, { useState } from 'react';
 import {
   Search, SlidersHorizontal, MapPin, Navigation, Minus, Plus, Layers,
-  UserCheck, Volume2, Coffee, Utensils, Home, Compass, MessageCircle, User
+  UserCheck, Volume2, Coffee, Utensils, ArrowLeft
 } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
+import { TabBar } from './shared/TabBar';
 
 const MapScreen: React.FC = () => {
-  const { navigate } = useAppContext();
+  const { navigate, goBack } = useAppContext();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [zoomLevel, setZoomLevel] = useState(15);
 
@@ -50,33 +51,61 @@ const MapScreen: React.FC = () => {
         <div className="absolute inset-0 pointer-events-none">
           <div className="w-full h-full relative overflow-hidden">
 
-          {/* Location Markers */}
-          {filteredLocations.map((location, idx) => (
-            <div
-              key={location.id}
-              className="absolute transform -translate-x-1/2 -translate-y-full cursor-pointer animate-[bounce_2s_ease-in-out_infinite]"
-              style={{
-                top: `${45 + idx * 8}%`,
-                left: `${40 + idx * 10}%`,
-                animationDelay: `${idx * 0.1}s`
-              }}
-              onClick={() => {
-                if (location.type === 'guides') navigate('guides');
-                else if (location.type === 'audio') navigate('audio-tours');
-                else if (location.type === 'coffee') navigate('coffee-chats');
-                else if (location.type === 'dining') navigate('restaurants');
-              }}
-            >
-              <div className={`w-10 h-10 ${location.color} rounded-full shadow-lg flex items-center justify-center text-white relative group`}>
-                <MapPin size={20} fill="white" />
-                {/* Tooltip */}
-                <div className="absolute bottom-full mb-2 hidden group-hover:block bg-white rounded-lg shadow-ios-lg px-3 py-2 whitespace-nowrap">
-                  <p className="text-xs font-semibold text-black">{location.name}</p>
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-white"></div>
+          {/* Location Markers - Enhanced Badges */}
+          {filteredLocations.map((location, idx) => {
+            const getIcon = () => {
+              switch(location.type) {
+                case 'guides': return <UserCheck size={22} />;
+                case 'audio': return <Volume2 size={22} />;
+                case 'coffee': return <Coffee size={22} />;
+                case 'dining': return <Utensils size={22} />;
+                default: return <MapPin size={22} />;
+              }
+            };
+
+            return (
+              <div
+                key={location.id}
+                className="absolute transform -translate-x-1/2 -translate-y-full cursor-pointer pointer-events-auto"
+                style={{
+                  top: `${45 + idx * 8}%`,
+                  left: `${40 + idx * 10}%`,
+                }}
+                onClick={() => {
+                  if (location.type === 'guides') navigate('guides');
+                  else if (location.type === 'audio') navigate('audio-tours');
+                  else if (location.type === 'coffee') navigate('coffee-chats');
+                  else if (location.type === 'dining') navigate('restaurants');
+                }}
+              >
+                {/* Pin Stem */}
+                <div className="absolute top-12 left-1/2 -translate-x-1/2 w-0.5 h-8 bg-gray-800/30"></div>
+
+                {/* Badge Container with pulse animation */}
+                <div className="relative animate-[bounce_2s_ease-in-out_infinite]" style={{ animationDelay: `${idx * 0.1}s` }}>
+                  {/* Pulse Ring */}
+                  <div className={`absolute inset-0 ${location.color} rounded-full animate-ping opacity-75`}></div>
+
+                  {/* Main Badge */}
+                  <div className={`relative w-12 h-12 ${location.color} rounded-full shadow-lg border-3 border-white flex items-center justify-center text-white group hover:scale-110 transition-transform`}>
+                    {getIcon()}
+
+                    {/* Enhanced Tooltip */}
+                    <div className="absolute bottom-full mb-3 hidden group-hover:block bg-white rounded-xl shadow-2xl px-4 py-3 whitespace-nowrap z-50 min-w-max">
+                      <p className="text-sm font-bold text-black mb-1">{location.name}</p>
+                      <p className="text-xs text-gray-500 capitalize">{location.type}</p>
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-2 border-[6px] border-transparent border-t-white"></div>
+                    </div>
+
+                    {/* Small counter badge */}
+                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-white rounded-full shadow-md flex items-center justify-center">
+                      <span className="text-[10px] font-bold text-gray-800">{idx + 1}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
 
           {/* Center Crosshair */}
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
@@ -90,6 +119,9 @@ const MapScreen: React.FC = () => {
       <div className="absolute top-0 left-0 w-full z-50 pt-12 px-5">
         <div className="bg-white/90 ios-blur rounded-[16px] shadow-ios-lg p-3">
           <div className="flex items-center gap-2 mb-3">
+            <button onClick={goBack} className="w-10 h-10 bg-white rounded-full shadow-ios flex items-center justify-center flex-shrink-0">
+              <ArrowLeft size={20} className="text-black" />
+            </button>
             <div className="flex-1 relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Search className="h-5 w-5 text-gray-400" />
@@ -169,25 +201,8 @@ const MapScreen: React.FC = () => {
         </div>
       </div>
 
-      {/* iOS Blur Tab Bar */}
-      <div className="absolute bottom-0 left-0 w-full bg-white/80 ios-blur border-t border-black/5 pt-3 pb-6 px-6 flex justify-between items-center z-[100]">
-        <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('home')}>
-          <Home size={24} strokeWidth={2.5} />
-          <span className="text-[10px] font-medium">Explore</span>
-        </div>
-        <div className="flex flex-col items-center gap-1 text-ios-blue cursor-pointer">
-          <Compass size={24} strokeWidth={2.5} />
-          <span className="text-[10px] font-medium">Map</span>
-        </div>
-        <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('chat')}>
-          <MessageCircle size={24} strokeWidth={2.5} />
-          <span className="text-[10px] font-medium">Chat</span>
-        </div>
-        <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('profile')}>
-          <User size={24} strokeWidth={2.5} />
-          <span className="text-[10px] font-medium">Profile</span>
-        </div>
-      </div>
+      {/* Tab Bar */}
+      <TabBar activeTab="map" onNavigate={navigate} />
 
     </div>
   );

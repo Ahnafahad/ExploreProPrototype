@@ -1,8 +1,9 @@
 
 import React, { useState } from 'react';
-import { Search, Home, Compass, MessageCircle, User, Star, Utensils, ArrowLeft } from 'lucide-react';
+import { Search, Star, Utensils, ArrowLeft } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { RESTAURANTS } from '../utils/mockData';
+import { TabBar } from './shared/TabBar';
 
 const RestaurantsScreen: React.FC = () => {
   const { navigate, goBack } = useAppContext();
@@ -112,25 +113,8 @@ const RestaurantsScreen: React.FC = () => {
            )}
        </div>
 
-       {/* Tab Bar (Shared) */}
-       <div className="absolute bottom-0 left-0 w-full bg-white/80 ios-blur border-t border-black/5 pt-3 pb-6 px-6 flex justify-between items-center z-[100]">
-            <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('home')}>
-                <Home size={24} strokeWidth={2.5} />
-                <span className="text-[10px] font-medium">Explore</span>
-            </div>
-             <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('map')}>
-                <Compass size={24} strokeWidth={2.5} />
-                <span className="text-[10px] font-medium">Map</span>
-            </div>
-             <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('chat')}>
-                <MessageCircle size={24} strokeWidth={2.5} />
-                <span className="text-[10px] font-medium">Chat</span>
-            </div>
-             <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('profile')}>
-                <User size={24} strokeWidth={2.5} />
-                <span className="text-[10px] font-medium">Profile</span>
-            </div>
-       </div>
+       {/* Tab Bar */}
+       <TabBar activeTab="map" onNavigate={navigate} />
 
     </div>
   );

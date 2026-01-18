@@ -1,8 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
-import { Search, ChevronLeft, Star, MapPin, SlidersHorizontal, ArrowLeft, Home, Compass, MessageCircle, User } from 'lucide-react';
+import { Search, ChevronLeft, Star, MapPin, SlidersHorizontal, ArrowLeft, UserCheck } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { GUIDES } from '../utils/mockData';
+import { TabBar } from './shared/TabBar';
 
 const GuidesScreen: React.FC = () => {
   const { navigate, goBack } = useAppContext();
@@ -34,6 +35,22 @@ const GuidesScreen: React.FC = () => {
             title="Map"
             className="grayscale-[0.2]"
         ></iframe>
+
+        {/* Guide Markers */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-[35%] left-[45%] transform -translate-x-1/2 -translate-y-1/2 pointer-events-auto">
+            <GuideMapMarker index={1} />
+          </div>
+          <div className="absolute top-[40%] left-[60%] transform -translate-x-1/2 -translate-y-1/2 pointer-events-auto">
+            <GuideMapMarker index={2} />
+          </div>
+          <div className="absolute top-[50%] left-[35%] transform -translate-x-1/2 -translate-y-1/2 pointer-events-auto">
+            <GuideMapMarker index={3} />
+          </div>
+          <div className="absolute top-[55%] left-[70%] transform -translate-x-1/2 -translate-y-1/2 pointer-events-auto">
+            <GuideMapMarker index={4} />
+          </div>
+        </div>
       </div>
 
       {/* Floating Header */}
@@ -115,28 +132,35 @@ const GuidesScreen: React.FC = () => {
           </div>
       </div>
 
-      {/* iOS Blur Tab Bar */}
-      <div className="absolute bottom-0 left-0 w-full bg-white/80 ios-blur border-t border-black/5 pt-3 pb-6 px-6 flex justify-between items-center z-[100]">
-        <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('home')}>
-          <Home size={24} strokeWidth={2.5} />
-          <span className="text-[10px] font-medium">Explore</span>
-        </div>
-        <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('map')}>
-          <Compass size={24} strokeWidth={2.5} />
-          <span className="text-[10px] font-medium">Map</span>
-        </div>
-        <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('chat')}>
-          <MessageCircle size={24} strokeWidth={2.5} />
-          <span className="text-[10px] font-medium">Chat</span>
-        </div>
-        <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('profile')}>
-          <User size={24} strokeWidth={2.5} />
-          <span className="text-[10px] font-medium">Profile</span>
-        </div>
-      </div>
+      {/* Tab Bar */}
+      <TabBar activeTab="map" onNavigate={navigate} />
 
     </div>
   );
 };
+
+// Guide Map Marker Component
+const GuideMapMarker: React.FC<{ index: number }> = ({ index }) => (
+  <div className="relative cursor-pointer group">
+    {/* Pin Stem */}
+    <div className="absolute top-12 left-1/2 -translate-x-1/2 w-0.5 h-8 bg-gray-800/30 z-0"></div>
+
+    {/* Badge with Animation */}
+    <div className="relative animate-[bounce_2s_ease-in-out_infinite]" style={{ animationDelay: `${index * 0.15}s` }}>
+      {/* Pulse Ring */}
+      <div className="absolute inset-0 bg-green-500 rounded-full animate-ping opacity-75"></div>
+
+      {/* Main Badge */}
+      <div className="relative w-12 h-12 bg-green-500 rounded-full shadow-lg border-3 border-white flex items-center justify-center text-white hover:scale-110 transition-transform">
+        <UserCheck className="w-6 h-6" />
+
+        {/* Counter Badge */}
+        <div className="absolute -top-1 -right-1 w-5 h-5 bg-white rounded-full shadow-md flex items-center justify-center">
+          <span className="text-[10px] font-bold text-gray-800">{index}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+);
 
 export default GuidesScreen;

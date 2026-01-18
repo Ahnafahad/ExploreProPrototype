@@ -5,7 +5,7 @@ import { useAppContext } from '../context/AppContext';
 import { Guide } from '../utils/mockData';
 
 const ActiveTourScreen: React.FC = () => {
-  const { navigate, selectedItem, user } = useAppContext();
+  const { navigate, goBack, selectedItem, user } = useAppContext();
   const guide = selectedItem as Guide;
 
   if (!guide) return null;
@@ -61,8 +61,8 @@ const ActiveTourScreen: React.FC = () => {
         ></iframe>
 
         {/* Floating Back Button */}
-        <button 
-            onClick={() => navigate('home')}
+        <button
+            onClick={goBack}
             className="absolute top-6 left-6 bg-white text-brand-dark font-bold text-xs py-2 px-4 rounded-full shadow-lg flex items-center gap-2 hover:bg-gray-50 transition-colors z-30"
         >
             <ArrowLeft className="w-4 h-4" />

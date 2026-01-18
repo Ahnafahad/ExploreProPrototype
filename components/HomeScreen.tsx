@@ -1,11 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
-import { 
+import {
   Search, SlidersHorizontal, Bell, Globe, ChevronDown, MapPin, Star, Heart,
-  Home, Compass, MessageCircle, User, UserCheck, Volume2, Coffee, Utensils
+  UserCheck, Volume2, Coffee, Utensils
 } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { GUIDES } from '../utils/mockData';
+import { TabBar } from './shared/TabBar';
 
 interface HomeScreenProps {
   language: 'en' | 'zh';
@@ -159,25 +160,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ language, setLanguage }) => {
 
       </div>
 
-      {/* iOS Blur Tab Bar */}
-      <div className="absolute bottom-0 left-0 w-full bg-white/80 ios-blur border-t border-black/5 pt-3 pb-6 px-6 flex justify-between items-center z-[100]">
-          <div className="flex flex-col items-center gap-1 text-ios-blue cursor-pointer">
-             <Home size={24} strokeWidth={2.5} />
-             <span className="text-[10px] font-medium">Explore</span>
-          </div>
-          <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('map')}>
-             <Compass size={24} strokeWidth={2.5} />
-             <span className="text-[10px] font-medium">Map</span>
-          </div>
-          <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('chat')}>
-             <MessageCircle size={24} strokeWidth={2.5} />
-             <span className="text-[10px] font-medium">Chat</span>
-          </div>
-          <div className="flex flex-col items-center gap-1 text-gray-400 cursor-pointer hover:text-ios-blue transition-colors" onClick={() => navigate('profile')}>
-             <User size={24} strokeWidth={2.5} />
-             <span className="text-[10px] font-medium">Profile</span>
-          </div>
-      </div>
+      {/* Tab Bar */}
+      <TabBar activeTab="home" onNavigate={navigate} />
 
     </div>
   );
